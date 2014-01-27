@@ -36,6 +36,7 @@ public class FreeBaseAPI
 
 	private DObject executeAPI(String _URL)
 	{
+		//System.out.println(_URL);
 		try
 		{
 			HttpURLConnection _Connection = (HttpURLConnection) (new URL(_URL)).openConnection();
