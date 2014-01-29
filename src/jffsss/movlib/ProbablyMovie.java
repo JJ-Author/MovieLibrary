@@ -8,6 +8,10 @@ import org.apache.pivot.wtk.TaskAdapter;
 
 import jffsss.util.Listeners;
 
+/**
+ * Contains all Information about a Movie a File could relate to
+ *
+ */
 public class ProbablyMovie
 {
 	private MovieInfo _MovieInfo;

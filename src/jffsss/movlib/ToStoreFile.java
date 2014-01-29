@@ -10,7 +10,10 @@ import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.TaskAdapter;
 
 import jffsss.util.Listeners;
-
+/**
+ * Contains the Movies a file could relate to.
+ * 
+ */
 public class ToStoreFile
 {
 	private VideoFileInfo _VideoFileInfo;
