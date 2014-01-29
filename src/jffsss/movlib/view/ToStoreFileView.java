@@ -19,7 +19,7 @@ import org.apache.pivot.wtk.PushButton;
 import org.apache.pivot.wtk.TextInput;
 /**
  * Displays all possible Movies for a file.
- * Also contains the Add Movie and Remove (file from list) button. 
+ * Also contains the Add Movie and Remove (file from list) button.   
  *
  */
 public class ToStoreFileView
