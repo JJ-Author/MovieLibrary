@@ -10,10 +10,7 @@ import org.apache.pivot.util.concurrent.TaskListener;
 import org.apache.pivot.wtk.TaskAdapter;
 
 import jffsss.util.Listeners;
-/**
- * Contains the Movies a file could relate to.
- * 
- */
+
 public class ToStoreFile
 {
 	private VideoFileInfo _VideoFileInfo;
@@ -96,8 +93,8 @@ public class ToStoreFile
 		{
 			_ProbablyMovieModel = new ProbablyMovie(this._ProbablyMovies.values());
 			this._ProbablyMovies.put(_IMDbID, _ProbablyMovieModel);
-			_ProbablyMovieModel.startRetrieving(_IMDbID);
 			this.onUpdate().notifyListeners("AddProbablyMovie", _ProbablyMovieModel);
+			_ProbablyMovieModel.startRetrieving(_IMDbID);
 		}
 		return _ProbablyMovieModel;
 	}
@@ -140,7 +137,7 @@ public class ToStoreFile
 		@Override
 		public void executeFailed(Task<Map<String, Double>> _Task)
 		{
-			_Task.getFault().printStackTrace();
+			System.out.println("Failed:GetIMDbIDs: " + _Task.getFault().getMessage());
 		}
 	}
 }

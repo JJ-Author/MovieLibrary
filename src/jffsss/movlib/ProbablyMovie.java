@@ -8,10 +8,6 @@ import org.apache.pivot.wtk.TaskAdapter;
 
 import jffsss.util.Listeners;
 
-/**
- * Contains all Information about a Movie a File could relate to
- *
- */
 public class ProbablyMovie
 {
 	private MovieInfo _MovieInfo;
@@ -37,7 +33,7 @@ public class ProbablyMovie
 
 	public void startRetrieving(String _IMDbID)
 	{
-		Task<MovieInfo> _Task = new GetMovieInfo2(_IMDbID);
+		Task<MovieInfo> _Task = new GetMovieInfo(_IMDbID);
 		TaskListener<MovieInfo> _TaskListener = new GetMovieInfoListener();
 		_Task.execute(new TaskAdapter<MovieInfo>(_TaskListener));
 	}
@@ -54,7 +50,7 @@ public class ProbablyMovie
 		@Override
 		public void executeFailed(Task<MovieInfo> _Task)
 		{
-			_Task.getFault().printStackTrace();
+			System.out.println("Failed:GetMovieInfo: " + _Task.getFault().getMessage());
 		}
 	}
 

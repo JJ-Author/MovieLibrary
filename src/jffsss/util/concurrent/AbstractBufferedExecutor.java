@@ -151,7 +151,7 @@ public abstract class AbstractBufferedExecutor<A, B>
 					e.printStackTrace();
 				}
 			if (this._Fault != null)
-				throw new TaskExecutionException(_Fault);
+				throw new TaskExecutionException(this._Fault);
 			return this._Result;
 		}
 

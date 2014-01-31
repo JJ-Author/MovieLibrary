@@ -1,12 +1,10 @@
 package jffsss.movlib;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jffsss.api.MyMovieAPI;
-import jffsss.util.concurrent.AbstractBufferedExecutor;
+import jffsss.api.OMDbAPI;
+import jffsss.util.Utils;
 import jffsss.util.d.DObject;
 
 import org.apache.pivot.util.concurrent.Task;
@@ -14,8 +12,6 @@ import org.apache.pivot.util.concurrent.TaskExecutionException;
 
 public class GetMovieInfo extends Task<MovieInfo>
 {
-	private static BufferedExecutor _BufferedExecutor = new BufferedExecutor();
-
 	private String _IMDbID;
 
 	public GetMovieInfo(String _IMDbID)
@@ -27,143 +23,94 @@ public class GetMovieInfo extends Task<MovieInfo>
 	{
 		try
 		{
-			return _BufferedExecutor.execute(this._IMDbID);
+			OMDbAPI _API = new OMDbAPI();
+			DObject _Response = _API.requestMovieByID(this._IMDbID);
+			return parseResponse(_Response);
 		}
-		catch (Throwable e)
+		catch (Exception e)
 		{
 			throw new TaskExecutionException(e);
 		}
 	}
 
-	private static class BufferedExecutor extends AbstractBufferedExecutor<String, MovieInfo>
+	private MovieInfo parseResponse(DObject _Response) throws Exception
 	{
-		public BufferedExecutor()
+		try
 		{
-			super(1, 1000, 500);
-		}
-
-		@Override
-		protected void execute()
-		{
-			List<String> _IMDbIDs = this.pollInputs(10);
-			if (_IMDbIDs.isEmpty())
-				return;
+			Map<String, DObject> _ResponseMap = _Response.asMap();
+			String _Title = _ResponseMap.get("Title").asString();
+			String _Year = _ResponseMap.get("Year").asString();
+			// Bindestrich im Jahr richtig parsen
+			String _Plot;
 			try
 			{
-				MyMovieAPI _IMDbAPI = new MyMovieAPI();
-				Map<String, MovieInfo> _Results = parseResponse(_IMDbAPI.requestMoviesByID(_IMDbIDs));
-				for (String _IMDbID : _IMDbIDs)
-					this.setResult(_IMDbID, _Results.get(_IMDbID));
+				_Plot = _ResponseMap.get("Plot").asString();
 			}
 			catch (Exception e)
 			{
-				this.setFault(e);
+				_Plot = null;
 			}
-		}
-
-		private static Map<String, MovieInfo> parseResponse(DObject _Response) throws Exception
-		{
+			List<String> _Genres;
 			try
 			{
-				Map<String, MovieInfo> _ResultMap = new HashMap<String, MovieInfo>();
-				for (DObject _ResponseListElement : _Response.asList())
-				{
-					Map<String, DObject> _ResponseListMap = _ResponseListElement.asMap();
-					String _Title = _ResponseListMap.get("title").asString();
-					Integer _Year = _ResponseListMap.get("year").parseAsInteger();
-					String _Plot;
-					try
-					{
-						try
-						{
-							_Plot = _ResponseListMap.get("plot_simple").asString();
-						}
-						catch (Exception e)
-						{
-							_Plot = _ResponseListMap.get("plot").asString();
-						}
-					}
-					catch (Exception e)
-					{
-						_Plot = null;
-					}
-					List<String> _Genres;
-					try
-					{
-						List<DObject> _ResponseListMapList = _ResponseListMap.get("genres").asList();
-						_Genres = new ArrayList<String>();
-						for (DObject _ResponseListMapListElement : _ResponseListMapList)
-							_Genres.add(_ResponseListMapListElement.asString());
-					}
-					catch (Exception e)
-					{
-						_Genres = null;
-					}
-					List<String> _Directors;
-					try
-					{
-						List<DObject> _ResponseListMapList = _ResponseListMap.get("directors").asList();
-						_Directors = new ArrayList<String>();
-						for (DObject _ResponseListMapListElement : _ResponseListMapList)
-							_Directors.add(_ResponseListMapListElement.asString());
-					}
-					catch (Exception e)
-					{
-						_Directors = null;
-					}
-					List<String> _Writers;
-					try
-					{
-						List<DObject> _ResponseListMapList = _ResponseListMap.get("writers").asList();
-						_Writers = new ArrayList<String>();
-						for (DObject _ResponseListMapListElement : _ResponseListMapList)
-							_Writers.add(_ResponseListMapListElement.asString());
-					}
-					catch (Exception e)
-					{
-						_Writers = null;
-					}
-					List<String> _Actors;
-					try
-					{
-						List<DObject> _ResponseListMapList = _ResponseListMap.get("actors").asList();
-						_Actors = new ArrayList<String>();
-						for (DObject _ResponseListMapListElement : _ResponseListMapList)
-							_Actors.add(_ResponseListMapListElement.asString());
-					}
-					catch (Exception e)
-					{
-						_Actors = null;
-					}
-					String _IMDbID = _ResponseListMap.get("imdb_id").asString().substring(2);
-					Double _IMDbRating;
-					try
-					{
-						_IMDbRating = _ResponseListMap.get("rating").parseAsDouble();
-					}
-					catch (Exception e)
-					{
-						_IMDbRating = null;
-					}
-					String _PosterSource;
-					try
-					{
-						_PosterSource = _ResponseListMap.get("poster").asMap().get("cover").asString();
-
-					}
-					catch (Exception e)
-					{
-						_PosterSource = null;
-					}
-					MovieInfo _MovieInfo = new MovieInfo(_Title, _Year, _Plot, _Genres, _Directors, _Writers, _Actors, _IMDbID, _IMDbRating, _PosterSource);
-					_ResultMap.put(_IMDbID, _MovieInfo);
-				}
-				return _ResultMap;
+				_Genres = Utils.split(_ResponseMap.get("Genre").asString(), ", ");
 			}
 			catch (Exception e)
 			{
-				throw new Exception("Parse Exception : " + _Response);
+				_Genres = null;
 			}
+			List<String> _Directors;
+			try
+			{
+				_Directors = Utils.split(_ResponseMap.get("Director").asString(), ", ");
+			}
+			catch (Exception e)
+			{
+				_Directors = null;
+			}
+			List<String> _Writers;
+			try
+			{
+				_Writers = Utils.split(_ResponseMap.get("Writer").asString(), ", ");
+			}
+			catch (Exception e)
+			{
+				_Writers = null;
+			}
+			List<String> _Actors;
+			try
+			{
+				_Actors = Utils.split(_ResponseMap.get("Actors").asString(), ", ");
+			}
+			catch (Exception e)
+			{
+				_Actors = null;
+			}
+			String _IMDbID = _ResponseMap.get("imdbID").asString().substring(2);
+			Double _IMDbRating;
+			try
+			{
+				_IMDbRating = _ResponseMap.get("imdbRating").parseAsDouble();
+			}
+			catch (Exception e)
+			{
+				_IMDbRating = null;
+			}
+			String _PosterSource;
+			try
+			{
+				_PosterSource = _ResponseMap.get("Poster").asString();
+			}
+			catch (Exception e)
+			{
+				_PosterSource = null;
+			}
+			MovieInfo _MovieInfo = new MovieInfo(_Title, _Year, _Plot, _Genres, _Directors, _Writers, _Actors, _IMDbID, _IMDbRating, _PosterSource);
+			return _MovieInfo;
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException("OMDbAPIParse" + _Response + " - " +  this._IMDbID);
 		}
 	}
 }

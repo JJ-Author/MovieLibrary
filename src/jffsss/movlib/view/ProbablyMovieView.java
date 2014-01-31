@@ -14,11 +14,6 @@ import jffsss.movlib.ProbablyMovie;
 import jffsss.util.Listener;
 import jffsss.util.Listeners;
 
-/**
- * Displays the content of a ProbablyMovie (all Information about a Movie a File could relate to). 
- * Also contains the Confirm Button
- *
- */
 public class ProbablyMovieView
 {
 	private ProbablyMovie _Model;

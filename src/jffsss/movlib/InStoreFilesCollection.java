@@ -12,7 +12,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
@@ -159,9 +158,9 @@ public class InStoreFilesCollection implements Closeable
 			_Document.add(new TextField("Movie:Title", _Title, Field.Store.YES));
 		}
 		{
-			Integer _Year = _MovieInfo.getYear();
+			String _Year = _MovieInfo.getYear();
 			if (_Year != null)
-				_Document.add(new IntField("Movie:Year", _Year, Field.Store.YES));
+				_Document.add(new TextField("Movie:Year", _Year, Field.Store.YES));
 		}
 		{
 			String _Plot = _MovieInfo.getPlot();
@@ -246,11 +245,11 @@ public class InStoreFilesCollection implements Closeable
 				if (_Title == null)
 					throw new IOException("Movie:Title");
 			}
-			Integer _Year;
+			String _Year;
 			{
 				try
 				{
-					_Year = Integer.valueOf(_Document.get("Movie:Year"));
+					_Year = _Document.get("Movie:Year");
 				}
 				catch (Exception e)
 				{

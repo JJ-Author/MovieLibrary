@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import jffsss.api.GoogleAPI;
-import jffsss.util.FileNameCleaner;
 import jffsss.util.d.DObject;
 
 import org.apache.pivot.util.concurrent.Task;
@@ -26,8 +25,7 @@ public class GetIMDbIDsFromGoogle extends Task<Map<String, Double>>
 		try
 		{
 			GoogleAPI _API = new GoogleAPI();
-			//DObject _Response = _API.requestSearch(this._VideoFileInfo.getFileInfo().getName() + " site:imdb.com", 0, 5);
-			DObject _Response = _API.requestSearch(tokenizeFileName(this._VideoFileInfo.getFileInfo()) + " site:imdb.com", 0, 5);
+			DObject _Response = _API.requestSearch(this._VideoFileInfo.getCleanedFileName() + " site:imdb.com", 0, 5);
 			return parseResponse(_Response);
 		}
 		catch (Exception e)
@@ -59,12 +57,5 @@ public class GetIMDbIDsFromGoogle extends Task<Map<String, Double>>
 				throw new RuntimeException("GoogleParse");
 			}
 		return _ResultMap;
-	}
-	
-	public static String tokenizeFileName(FileInfo _FileInfo)
-	{
-		FileNameCleaner fnc = new FileNameCleaner();
-		//String _FileName = _FileInfo.getName().replaceAll("[.,_]", " ");
-		return fnc.getCleanedFilename(_FileInfo.getName());//Utils.split(_FileName, " ").get(0);
 	}
 }

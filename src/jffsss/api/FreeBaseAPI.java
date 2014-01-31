@@ -13,9 +13,7 @@ import jffsss.util.d.DObject;
 public class FreeBaseAPI
 {
 	public FreeBaseAPI()
-	{
-		// 189173206573
-	}
+	{}
 
 	public DObject requestSearch(Boolean _Ident, String _Query, String _Filter, String _Output, Integer _Limit, String _Lang)
 	{
@@ -26,6 +24,7 @@ public class FreeBaseAPI
 		_Params.put("output", _Output);
 		_Params.put("limit", _Limit);
 		_Params.put("lang", _Lang);
+		//_Params.put("key", "189173206573");
 		return this.executeAPI("https://www.googleapis.com/freebase/v1/search", _Params);
 	}
 
@@ -36,7 +35,6 @@ public class FreeBaseAPI
 
 	private DObject executeAPI(String _URL)
 	{
-		//System.out.println(_URL);
 		try
 		{
 			HttpURLConnection _Connection = (HttpURLConnection) (new URL(_URL)).openConnection();
@@ -75,7 +73,7 @@ public class FreeBaseAPI
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("FreeBaseAPI", e);
+			throw new RuntimeException("FreeBaseAPI: " + e.getMessage());
 		}
 	}
 }

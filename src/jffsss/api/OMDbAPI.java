@@ -67,7 +67,7 @@ public class OMDbAPI
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("OMDbAPI", e);
+			throw new RuntimeException("OMDbAPI: " + e.getMessage());
 		}
 	}
 }

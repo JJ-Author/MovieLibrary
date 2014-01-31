@@ -1,47 +1,42 @@
 package jffsss.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class FileNameCleaner
+{
+	private FileNameCleaner()
+	{}
 
-public class FileNameCleaner {
-
-	public FileNameCleaner() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public String getCleanedFilename(String name)
+	public static String getCleanedFileName(String _FileName)
 	{
-		String result = name;
-		result = result.replaceAll("(?i)\\.[a-z]{3}$", ""); 			//delete file suffix
-		result = result.replace('_', ' ');								//use only blanks instead of underscore
-		result = result.replaceAll("(?i)(\\D)(\\.)(\\S)", "$1 $3");		//if dots used as whitespace replace them with blank
-		
-		// remove some keywords indicating quality or format of the movie file
-		result = result.replaceAll("(?i)720p?", "");
-		result = result.replaceAll("(?i)1080[pi]?", "");
-		result = result.replaceAll("(?i)CD ?\\d\\d?", "");
-		result = result.replaceAll("(?i)DVD ?\\d\\d?", "");
-		result = result.replaceAll("(?i)part ?\\d\\d?", "");
-		result = result.replaceAll("(?i)bdrip", "");
-		result = result.replaceAll("(?i)dvdrip", "");
-		result = result.replaceAll("(?i)dubbed", "");
-		result = result.replaceAll("(?i)[xh]?264", "");
-		result = result.replaceAll("(?i)divx", "");
-		result = result.replaceAll("(?i)xvid", "");
-		result = result.replaceAll("(?i)ac3", "");
-		result = result.replaceAll("(?i)dts", "");
-		result = result.replaceAll("(?i)mp3", "");
-		result = result.replaceAll("(?i)mp4", "");
-	
-		// remove anything between brackets
-		result = result.replaceAll("(?i)\\(.*\\)", "");
-		result = result.replaceAll("(?i)\\[.*\\]", "");
-		//Pattern pattern = Pattern.compile();
-		//Matcher matcher = pattern.matcher(name);
-		//result =  matcher.replaceAll("");
-		
-		
-		return result;
-	}
+		String _Result = _FileName;
+		_Result = _Result.replaceAll("(?i)\\.[a-z]{3}$", ""); // delete file suffix
+		_Result = _Result.replace('_', ' '); // use only blanks instead of underscore
+		_Result = _Result.replaceAll("(?i)(\\D)(\\.)(\\S)", "$1 $3"); // if dots used as whitespace replace them with
+																	// blank
 
+		// remove some keywords indicating quality or format of the movie file
+		_Result = _Result.replaceAll("(?i)720p?", "");
+		_Result = _Result.replaceAll("(?i)1080[pi]?", "");
+		_Result = _Result.replaceAll("(?i)CD ?\\d\\d?", "");
+		_Result = _Result.replaceAll("(?i)DVD ?\\d\\d?", "");
+		_Result = _Result.replaceAll("(?i)part ?\\d\\d?", "");
+		_Result = _Result.replaceAll("(?i)bdrip", "");
+		_Result = _Result.replaceAll("(?i)dvdrip", "");
+		_Result = _Result.replaceAll("(?i)dubbed", "");
+		_Result = _Result.replaceAll("(?i)[xh]?264", "");
+		_Result = _Result.replaceAll("(?i)divx", "");
+		_Result = _Result.replaceAll("(?i)xvid", "");
+		_Result = _Result.replaceAll("(?i)ac3", "");
+		_Result = _Result.replaceAll("(?i)dts", "");
+		_Result = _Result.replaceAll("(?i)mp3", "");
+		_Result = _Result.replaceAll("(?i)mp4", "");
+
+		// remove anything between brackets
+		_Result = _Result.replaceAll("(?i)\\(.*\\)", "");
+		_Result = _Result.replaceAll("(?i)\\[.*\\]", "");
+		// Pattern pattern = Pattern.compile();
+		// Matcher matcher = pattern.matcher(name);
+		// result = matcher.replaceAll("");
+
+		return _Result;
+	}
 }

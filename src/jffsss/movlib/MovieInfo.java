@@ -9,7 +9,7 @@ import jffsss.util.Utils;
 public class MovieInfo
 {
 	private String _Title;
-	private Integer _Year;
+	private String _Year;
 	private String _Plot;
 	private List<String> _Genres;
 	private List<String> _Directors;
@@ -19,7 +19,7 @@ public class MovieInfo
 	private Double _IMDbRating;
 	private String _PosterSource;
 
-	public MovieInfo(String _Title, Integer _Year, String _Plot, List<String> _Genres, List<String> _Directors, List<String> _Writers, List<String> _Actors, String _IMDbID, Double _IMDbRating, String _PosterSource)
+	public MovieInfo(String _Title, String _Year, String _Plot, List<String> _Genres, List<String> _Directors, List<String> _Writers, List<String> _Actors, String _IMDbID, Double _IMDbRating, String _PosterSource)
 	{
 		this._Title = _Title;
 		this._Year = _Year;
@@ -38,7 +38,7 @@ public class MovieInfo
 		return this._Title;
 	}
 
-	public Integer getYear()
+	public String getYear()
 	{
 		return this._Year;
 	}

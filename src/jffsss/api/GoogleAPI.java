@@ -76,7 +76,7 @@ public class GoogleAPI
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("GoogleAPI", e);
+			throw new RuntimeException("GoogleAPI: " + e.getMessage());
 		}
 	}
 
